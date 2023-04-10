@@ -12,6 +12,7 @@
     <template #bt>axios请求</template>
 </buttoncountC><!-- 为什么，用解构来赋值的话，debug那里有数据了，这里却不出现，再点一下增减按钮才出现-->
 <p>获得第{{k}}个数据：</p><h4>{{ti}}{{id}}</h4><p>{{dd}}</p>
+  <button type="danger"></button>
 </template>
 
 <script setup>
@@ -19,7 +20,7 @@ import {ref} from "vue";
 import axios from "axios";
 import { useCounterStore } from '@/store/counter';
 import buttoncountC from './xiaozujian/buttoncountC.vue';
-
+import button from './elezujian/button.vue';
 const counter = useCounterStore();
 let k=ref(counter.count);
 let [id,ti,dd,n]= [ref(null),ref(''),ref(''),ref(1)];
