@@ -7,10 +7,12 @@ export const useCounterStore = defineStore('counter',{
     }),
     actions: {//必须 包含了 store 操作的对象。
         increment() {
-            this.count+=1;
+            this.count+=this.zhi;
+            console.log('点击计数增加by store')
         },
         decrement() {
-            this.count-=1;
+            this.count-=this.zhi;
+            console.log('点击计数降低by store')
         },
     },
 });

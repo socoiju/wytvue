@@ -3,7 +3,6 @@
   <p>点击计数：{{k}}</p>
   <buttoncountC @click="zj">
       <template #bt>增加1</template>
-      <template >12345</template>
   </buttoncountC>
   <buttoncountC  @click="js">
       <template #bt>减少1</template>
