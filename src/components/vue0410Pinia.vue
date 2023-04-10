@@ -26,7 +26,7 @@ let k=ref(counter.count);
 let id=ref('');
 let ti=ref('');
 let dd=ref('');
-let n=ref(0);
+let n=ref(1);
 function axiosxx(){
     axios.get('https://jsonplaceholder.typicode.com/posts')
         .then((response) => {
@@ -59,8 +59,9 @@ function js(){
 </script>
 
 <style >
-h4{  font-size:25px;}
-p{
-    font-size:25px;
+h4,p{font-size:25px;}
+input{
+    border:none;background-color: #d2d2d2;
+    font-size:25px;width:100px;height:40px;
 }
 </style>

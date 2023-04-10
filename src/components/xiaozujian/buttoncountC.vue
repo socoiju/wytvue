@@ -1,5 +1,5 @@
 <template>
-    <div><button @click="nt"><slot name="bt"></slot></button></div>
+<button @click="nt"><slot name="bt"></slot></button><!--如果包裹div给button，父组件的点击范围会超过按钮-->
 </template>
 <script setup>
 function nt(){
@@ -8,7 +8,11 @@ function nt(){
 </script>
 
 <style scoped>
+
 button{
-    color:black;border:none;background-color: #d2d2d2;font-size:25px;min-width:80px;height:40px;margin-left: 10px;
+    color:black;border:none;background-color: #d2d2d2;
+    font-size:25px;min-width:100px;height:40px;
+    margin-top: 10px;
+    margin-left: 10px;
 }
 </style>
