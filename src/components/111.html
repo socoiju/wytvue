@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>宿題２＆３＆４</title>
+    <style>
+
+        .green_bg{
+            background-color: #c6e0b5;
+        }
+        #blue_button{
+            color:white;border:none;background-color:#4573c4;font-size:16px;width:50px;height:35px;margin-left: 10px;
+        }
+        #red_button{
+            font-size:16px;width:50px;height:35px;border:none;background-color:#c00202;color:white;margin-top: 20px;
+        }
+        table{
+            border-collapse:collapse;
+            border-bottom: 1px solid black;
+            border-right: 1px solid black;
+        }
+        td,th{
+            border-top: 1px solid black;
+            border-left: 1px solid black;
+        }
+    </style>
+
+</head>
+<body>
+<div>
+    <!-- 填写名称&追加按钮 -->
+    <div id="table_and_button" style="width: 400px;display:flex">
+        <table style="height:20px;margin-top: 5px;">
+            <tr>
+                <td class="green_bg">氏名</td>
+                <td style="width:100px"><input id="person_name" style="border:none;width:100px"></td>
+            </tr>
+        </table>
+        <button  id="blue_button" onclick="add_row()">追加</button>
+    </div>
+    <br>
+    <!-- 数据表格 -->
+    <table id="sj" style="min-width:270px;">
+        <thead class="green_bg">
+        <th>選択<input type="checkbox" onclick="all_check()" id="all"></th>
+        <th>氏名</th>
+        <th>性別</th>
+        <th>住民税</th>
+        </thead>
+        <tr>
+            <td><input type="checkbox"></td>
+            <td>田中一郎</td>
+            <td><input type="radio" name="1" value="M" checked>男<input type="radio" name="1" value="F">女</td>
+            <td class="money">12000</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox"></td>
+            <td>斎藤次郎</td>
+            <td><input type="radio" name="2" value="M" checked>男<input type="radio" name="2" value="F">女</td>
+            <td class="money">22098</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox"></td>
+            <td>鈴木由紀</td>
+            <td><input type="radio" name="3" value="M">男<input type="radio" name="3" value="F" checked>女</td>
+            <td class="money">2200</td>
+        </tr>
+    </table>
+    <!-- 删除按钮和合计表格 -->
+    <div style="display:flex;width:270px;justify-content: space-between; ">
+        <button onclick="delete_row()" id="red_button">削除</button>
+        <table id="zj"style="margin-top: 20px;text-align: right">
+            <tr>
+                <th class="green_bg">合計</th>
+                <td id="sum" class="sum_money"></td>
+            </tr>
+            <tr>
+                <th class="green_bg">男性合計</th>
+                <td id="m_sum" class="sum_money"></td>
+            </tr>
+            <tr>
+                <th class="green_bg">女性合計</th>
+                <td id="f_sum" class="sum_money"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    //データテーブルを選択する|选中数据表格
+    const bg=document.getElementById("sj");//choose the data table 选择数据表
+
+    //金額の表示形式を設定|金钱格式设置
+    money_format("money");
+
+    //金額の編集機能|金额可编辑
+    for (i=0;i<bg.querySelectorAll("td:nth-child(4)").length; i++) {
+        bg.querySelectorAll("td:nth-child(4)")[i].setAttribute("contenteditable",true);//某表全选第四列循环每个单元格设置可编辑为真
+    }
+
+    //合計|合计
+    sum();
+
+    //テーブルが変更された場合、合計を再計算する|如果表格发生变化，则重新计算总和
+    observer_table();
+
+    //関数 - テーブルデータを取得する|函数 得到表格的数据
+    function get_data(){
+        const bg_dic={};//辞書-データを取得する前に初期化する
+        var con=""
+        //チェックボックスの列
+        var check = [];
+        for (i=0;i<bg.querySelectorAll("td:nth-child(1)").length; i++) {
+            con = bg.querySelectorAll("td:nth-child(1) input[type='checkbox']")[i];
+            check.push(con.checked?1:0);
+        }
+        //名前の列
+        var person = [];
+        for (i=0;i<bg.querySelectorAll("td:nth-child(2)").length; i++) {
+            con = bg.querySelectorAll("td:nth-child(2)")[i].textContent;
+            person.push(con);//Add an item to the list
+        }
+        //性別の列
+        var gender = [];
+        for (i=0;i<bg.querySelectorAll("td:nth-child(3)").length*2; i++) {
+            if(bg.querySelectorAll("td:nth-child(3) input[type='radio']")[i].checked==true){
+                gender.push(bg.querySelectorAll("td:nth-child(3) input[type='radio']")[i].value);
+            }
+        }
+        //金額の列
+        var money = [];
+        for (i=0;i<bg.querySelectorAll("td:nth-child(4)").length; i++) {
+            con = bg.querySelectorAll("td:nth-child(4)")[i].textContent.replace(/[^\d]/g, '');
+            money.push(con);
+        }
+
+        //テーブルデータを辞書に格納する|将表格数据放进字典
+        for (i=0;i<person.length;i++){
+            bg_dic[i]={"check":Number(check[i]),"person":person[i],"gender":gender[i],"money":Number(money[i])};
+        }
+        return bg_dic;
+    }
+
+    //関数 - 合計|函数 总和
+    function sum(){
+        const bg_dic=get_data();
+        //sum (text2)
+        var sum=0
+        var m_sum=0
+        var f_sum=0
+        for (i=0;i<Object.keys(bg_dic).length;i++){
+            sum +=bg_dic[i]["money"];
+            if(bg_dic[i]["gender"]=="M"){
+                m_sum+=bg_dic[i]["money"];
+            }else if(bg_dic[i]["gender"]=="F"){
+                f_sum+=bg_dic[i]["money"];
+            }
+        }
+        var sum_out = document.getElementById("sum");
+        var m_sum_out = document.getElementById("m_sum");
+        var f_sum_out = document.getElementById("f_sum");
+        sum_out.innerHTML=sum;
+        m_sum_out.innerHTML=m_sum;
+        f_sum_out.innerHTML=f_sum;
+        money_format("sum_money");
+
+        var row = ""
+        var q=""
+        for(i=1;i<bg.rows.length;i++) {
+            q+=bg.getElementsByTagName("tr")[i].textContent;
+
+            row=document.querySelectorAll("tr:nth-child(2) td:nth-child(3), tr:nth-child(2) th:nth-child(3)");
+        }
+
+    }
+
+    //関数 - 金額の表示形式を設定|函数 金钱的格式
+    function money_format(a){
+        //初期設定（2つのテーブルに適用）|初始设定
+        for (i=0;i<document.getElementsByClassName(a).length;i++){
+            let money = document.getElementsByClassName(a)[i].innerText.replace(/[^\d]/g, '');
+            let m_c = '￥' + Number(money).toLocaleString("ja-JP");
+            document.getElementsByClassName(a)[i].innerText = m_c;
+        }
+        //フォーカスが外れた後に再設定
+        const money_cells = bg.querySelectorAll("td:nth-child(4)");
+        money_cells.forEach(cell => {
+            cell.addEventListener("blur", () => {
+                let value = cell.innerText.replace(/[^\d]/g, '');
+                let formattedValue = '￥' + Number(value).toLocaleString("ja-JP");
+                cell.innerText = formattedValue;
+            });
+        });
+    }
+
+    //関数 - チェックボックスをすべて選択する|函数 复选框的全选
+    function all_check(){
+        if(document.getElementById("all").checked == true){
+            for (i=0;i<bg.querySelectorAll("td:nth-child(1)").length; i++) {
+                bg.querySelectorAll("td:nth-child(1) input[type='checkbox']")[i].checked=true;
+            }
+        }
+    }
+
+    //関数 - 行を追加する|函数 添加单元格
+    var radio_name_a="new"//radioの初期nameを設定する|添加函数之外先设置初始命名
+    var radio_name_b=1
+    function add_row(){
+        var radio_name = radio_name_a + radio_name_b;
+        var person_name=document.getElementById("person_name").value;
+        var row = bg.insertRow();
+        row.setAttribute("class", "white_bg");
+        var cell1 = row.insertCell();
+        var cell2 = row.insertCell();
+        var cell3 = row.insertCell();
+        var cell4 = row.insertCell();
+        cell1.innerHTML = "<input type=\"checkbox\">";
+        cell2.appendChild(document.createTextNode(person_name));
+        cell3.innerHTML = "<input type=\"radio\" name=\"" + radio_name + "\" value=\"M\">男<input type=\"radio\" name=\"" + radio_name + "\" value=\"F\">女";
+        cell4.appendChild(document.createTextNode("0"));
+        cell4.setAttribute("class", "money");
+        radio_name_b++;
+        money_format();
+        for (let i=0; i<bg.querySelectorAll("td:nth-child(4)").length; i++) {
+            bg.querySelectorAll("td:nth-child(4)")[i].setAttribute("contenteditable",true);
+        }
+        observer_table();
+        sum();
+    }
+
+    //関数 - 行を削除する|函数 删除单元格
+    function delete_row(){
+        const bg_dic=get_data();
+        //「while」を使用すると、各行を完全に削除できます。
+        var i = bg.rows.length - 1;
+        while (i > 0) {
+            if (bg_dic[i-1]["check"]==true) {
+                bg.deleteRow(i);
+            }
+            i--;
+        }
+    }
+
+    //関数 - 変更を監視する|函数 监听
+    function observer_table(){
+        // テーブルの子ノードとコンテンツを監視する|监听表格的子节点和内容
+        const radioButtons = document.querySelectorAll('input[type="radio"]');
+        const observer = new MutationObserver(function() {
+            sum();
+        });
+        const config = {
+            childList: true, characterData: true, subtree: true,
+            //attributes: true,attributeFilter: ["checked"]
+        };
+        observer.observe(bg,config);
+        //ラジオボタンを監視する（テーブルではラジオボタンを監視できないため）|监听单选框（监听表格时候无法监听到这个，所以另外加了）
+        for (let i = 0; i < radioButtons.length; i++) {
+            radioButtons[i].addEventListener('change', function() {
+                sum();
+            });
+        }
+    }
+</script>
+</body>
+</html>

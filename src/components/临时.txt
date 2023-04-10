@@ -1,0 +1,44 @@
+
+            this.regexpp(this.moneydata[2].zy);
+            console.log(this.regexpp);
+——————————————————————————————————————————
+            if (regex.test(this.moneydata[1].zy)) {
+                console.log("符合格式");
+            } else {
+                console.log("不符合格式");
+            }
+——————————————————————————————————————————、
+
+type="number"
+
+——————————————————————————————————————————
+
+<button class="arrow-button" v-if="this.moneydata[index].zd==2" @click="zhediegb"><span class="arrow2"></span></button>
+——————————————————————————————————————————
+const array = [1, 2, 3, 4, 5];
+const startIndex = 2;
+const n = 3;
+
+array.splice(startIndex, 0, ...list2);//插入位置，要删掉的元素，要插入的列表list2
+——————————————————————————————————————————
+if (str in k) {
+  k[str].push(item);
+} else {
+  k[str] = [item];
+}
+——————————————————————————————————————————
+  deleteRows(index) {
+      // 删除从 0 到 index（包括 index）的行
+      this.rows.splice(0, index + 1);
+——————————————————————————————————————————
+filters: {
+  roundNumber(value) {
+    return Math.round(value);
+  },
+}
+——————————————————————————————————————————
+const dateString = '20230102';
+const year = parseInt(dateString.slice(0, 4), 10);
+const month = parseInt(dateString.slice(4, 6), 10) - 1; // 注意：JavaScript 的月份从 0 开始，因此需要减 1。
+const day = parseInt(dateString.slice(6, 8), 10);
+const dateObject = new Date(year, month, day);
