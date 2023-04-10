@@ -22,19 +22,17 @@ import buttoncountC from './xiaozujian/buttoncountC.vue';
 
 const counter = useCounterStore();
 let k=ref(counter.count);
-//let{tt,ss}=['12','23'];
-let id=ref('');
-let ti=ref('');
-let dd=ref('');
-let n=ref(1);
+let [id,ti,dd,n]= [ref(null),ref(''),ref(''),ref(1)];
+// let id=ref('');
+// let ti=ref('');
+// let dd=ref('');
+// let n=ref(1);
 function axiosxx(){
+    console.log('顺利运行ing');
     axios.get('https://jsonplaceholder.typicode.com/posts')
         .then((response) => {
-            id.value=`(${response.data[k.value].id})`;
-            ti.value=response.data[k.value].title;
-            dd.value=response.data[k.value].body;
-            //({title:tt,body:ss}=response.data[k.value]);//用这个解构来写之后总是点另外俩按钮才触发页面显示不知道为什么
-            console.log(dd);
+            ({title:ti.value,body:dd.value}=response.data[k.value]);
+            id.value=`(${response.data[k.value].id})`;//这行不运行
         })
         .catch((error) => {
             console.error(error);
