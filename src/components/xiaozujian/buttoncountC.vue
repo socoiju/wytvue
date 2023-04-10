@@ -2,18 +2,17 @@
     <div>
         <button @click="nt"><slot name="bt"></slot></button>
     </div>
-    <input v-model="zhi">
-
+    <input v-model="zhii">
 </template>
 <script setup>
+
 import { useCounterStore } from '@/store/counter';
 import {ref} from "vue";
 const counter=useCounterStore;
-let zhi=ref('');
+let zhii=ref('');
 function nt(){
-    counter.zhi=Number(zhi.value);
-    console.log('我是按钮C，我被点击啦，此外，store里的zhi值是'+counter.zhi);
-
+    counter.zhi=Number(zhii.value);
+    console.log(`我是按钮C，我被点击啦，此外，store里的zhi值是${counter.count}`);
 }
 </script>
 
