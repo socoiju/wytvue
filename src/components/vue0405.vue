@@ -80,7 +80,7 @@ export default {
             return `${year}/${month}/${day}`;
         },
 
-        //名称判断
+        //名称判断-成功用在11号的代码里啦
         defaultDataChuli(){
             let k=[];//这是存放键值对的，是旅费交通费的话，注册一个日期名字的键，把它放在这个列表里面，之后有新的也好查找
             let k1=[...this.defaultData];
@@ -143,7 +143,7 @@ export default {
             this.moneyDataB[index][newda] = event.target.innerHTML;
         },
 
-        //残高计算。编辑其他如果涉及到残高计算，引用此函数
+        //残高计算。编辑其他如果涉及到残高计算，引用此函数 -成功用在11号的代码里啦
         cangaoInpu(){
             let k=[this.input1];
             for( let i=0;i<this.moneyDataB.length;i++) {

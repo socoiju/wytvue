@@ -20,7 +20,9 @@ export const useCounterStore = defineStore('counter',{
         ],
         moneyData:[//金钱的处理数据，有了子节点
             {dt: "20230108", nm: "1号XXX", zy: "9号", hq: "1800", dq: ""},
-        ]
+        ],
+        cangaoData:[],
+        cangao:0,
     }),
     actions: {//必须 包含了 store 操作的对象。
         increment() {
@@ -44,7 +46,7 @@ export const useCounterStore = defineStore('counter',{
                     if (str in k) {//当已经存在折叠文件夹， 把此内容推到过去的索引那里。push进去
                         // console.log(`当前的k2${k2}，已有折叠文件夹，打算推送给${k[str]}`);
                         // console.log(k2);
-                        k2[k[str]].zdnr.push({...item});
+                        k2[k[str]].children.push({...item});
                         k2[k[str]].zd=1;
                         //---解决：push也是引用来着。问题：每次触发这个函数，这里都会增加而不是清空后再写入。
                         k2[k[str]].zy=k2[k[str]].zy+"、"+item.zy;
@@ -54,7 +56,7 @@ export const useCounterStore = defineStore('counter',{
                     } else {//暂时只有一个，正常push,但给zdnr里面一个副本，如果有第二项，它就是第一项折叠内容了
                         //1让ls等于自己 2给自己建立zdnr数组 3 ls放进去 4 整个item推给k2
                         let ls={...item};
-                        item.zdnr=[ls];
+                        item.children=[ls];
                         k2.push({...item});
                         k[str] = [r];//新建一个键值对,这是记录的文件夹位置索引
                         r++;
@@ -63,7 +65,7 @@ export const useCounterStore = defineStore('counter',{
                     }
                 } else{//不是那个名字，正常推送
                     item.zd=0;
-                    item.zdnr=[];
+                    item.children=[];
                     k2.push(item);
                     r++;
                     //console.log(`摘要叫做${item.zy}的，当前索引数为${r}。不是旅費交通費，普通地推送出来，放在第${r}行`);
@@ -74,7 +76,13 @@ export const useCounterStore = defineStore('counter',{
                     break;
                 }
             }
-            this.moneyData=[...k2];//完全改变了moneyData的值
+            this.moneyData=[...k2];//完全改变了moneyData的值,清空了。
+            console.log()
+            let i=0;
+            for (let item of this.moneyData){
+                item.key=i;
+                i++;
+            }
             //console.log(this.moneyData[3]);
             //counter.count为总计数
 
@@ -83,6 +91,33 @@ export const useCounterStore = defineStore('counter',{
 
             // console.log("这是期间每次的k1");
             // console.log(k1);
-        }
+        },
+        cangaoInpu(){
+            let k=[this.cangao];
+            for( let i=0;i<this.moneyData.length;i++) {
+                let loss = Number(this.moneyData[i].hq);
+                let gett = Number(this.moneyData[i].dq);
+                if (this.moneyData[i].zd == 3) {   //3是折叠内的值，不参与计算。
+                    loss = 0;
+                    gett = 0;
+                }
+                this.cangaoData[i] = k[i] - loss + gett;
+                k.push(Math.round(this.cangaoData[i]));
+                //console.log("运行第"+i+"次的金钱数据："+this.moneyData[i]);
+                if (loss==0 && gett==0) {
+                    this.cangaoData[i] = "";
+                    //break;//发现此行没有入金和出金就停止计算残高。但是这样的话中间行数就不能空。总之先这样写着，毕竟原文行数也没有留空
+                }
+                //console.log("运行第" + i + "次：" + this.cangaoData);
+            }
+        },
+        //增加一行，折叠状态默认为0（非折叠行），重算残高9
+        addrow(){
+            this.moneyData.push({dt: "1", nm: "", zy: "", hq: "", dq: "",zd:0,children:[]});
+            this.moneyData[this.moneyData.length-1].key=this.moneyData.length;
+            this.cangaoInpu();
+            console.log("增加了一行");
+        },
+
     },
 });
