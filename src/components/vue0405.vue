@@ -104,7 +104,8 @@ export default {
                         //console.log(`摘要叫做${item.zy}的，当前索引数为${r}。是旅費交通費，且已经有同日记录，推送到了第${k[str]}行`);
                         // console.log(`推送了此${str}内容去${k[str]}位置`);
                     } else {//暂时只有一个，正常push,但给zdnr里面一个副本，如果有第二项，它就是第一项折叠内容了
-                        item.zdnr=[item];
+                        let ls={...item};//4月11日的修改，防止循环引用
+                        item.zdnr=[ls];
                         k2.push({...item});
                         k[str] = [r];//新建一个键值对,这是记录的文件夹位置索引
                         r++;
