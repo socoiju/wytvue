@@ -79,8 +79,13 @@ export const useCounterStore = defineStore('counter',{
             this.moneyData=[...k2];//完全改变了moneyData的值,清空了。
             console.log()
             let i=0;
+            //let r2=[];
             for (let item of this.moneyData){
                 item.key=i;
+                if("children" in item&&item.children.length==1){
+                    delete item.children;
+                    console.log("item");
+                }
                 i++;
             }
             //console.log(this.moneyData[3]);

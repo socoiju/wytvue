@@ -22,14 +22,20 @@
   <el-button  class="button1" round="8px" color="#626aef">qwer</el-button>
   <el-button  class="button1"  type="success">Success</el-button>
   <el-button  type="success"> Success</el-button>
-
-  <el-table border   :data="tableData" style="margin-top:10px;" height="250" :tree-props="{children: 'children'}">
-      <el-table-column contenteditable="true" class="dataCell" prop="dt" label="日付" width="180"/>
-      <el-table-column class="nameCell" prop="nm" label="相手勘定" width="180"/>
-      <el-table-column prop="zy" label="摘要"/>
-      <el-table-column class="redMoneyCell" prop="hq" label="出金"/>
-      <el-table-column class="moneyCell" prop="dq" label="入金"/>
-      <el-table-column label="残高">
+  <el-table border
+            :data="tableData"
+            style="margin-top:10px;"
+            height="350"
+            row-key="key"
+            @expand="handleExpand"
+            @collapse="handleCollapse"
+  >
+      <el-table-column width="100px" class="dataCell" prop="dt" label="日付"/>
+      <el-table-column class="nameCell" prop="nm" label="相手勘定"/>
+      <el-table-column width="350px" prop="zy" label="摘要"/>
+      <el-table-column width="100px" class="redMoneyCell" prop="hq" label="出金"/>
+      <el-table-column width="100px" class="moneyCell" prop="dq" label="入金"/>
+      <el-table-column width="100px" label="残高">
         <template v-slot="scope">
           {{ counter.cangaoData[scope.$index] }}
         </template>
@@ -41,14 +47,13 @@
 <!--      </el-table>-->
 <!--  </div>-->
 
-  <el-button  class="button1" @click="addrow()">追加</el-button>
+  <el-button  class="button1" @click="addrow()" style="margin-top:10px">追加</el-button>
   <br><br>
   <br><br>
 
 </template>
 
 <script setup>
-
 import {onBeforeMount,  ref} from "vue"
 import axios from "axios"
 import { useCounterStore } from '@/store/counter'
@@ -57,7 +62,7 @@ const counter = useCounterStore();
 let dj=ref(counter.count);
 let [id,ti,dd,n]= [ref(null),ref(''),ref(''),ref(1)];
 //let data=[...counter.moneyData];
-let tableData=[...counter.moneyData];
+let tableData=ref([...counter.moneyData]);
 //let balanceData=[...counter.cangaoData];
 //data=[...counter.moneyData[counter.count]];
 // 这句的失败原因是右边的第0个是花括号的对象而不是数组！
@@ -73,18 +78,23 @@ function axiosxx(){//获取网上的json
             console.error(error);
         });
 }//获取网上的json
-
+function handleExpand(){
+    counter.cangaoInpu()
+}
+function handleCollapse(){
+    counter.cangaoInpu()
+}
 function addrow(){
   counter.addrow()
   counter.cangaoInpu()
-  tableData=[...counter.moneyData];
+  tableData.value=[...counter.moneyData];
   console.log(`处理完毕${counter.moneyData[counter.count]}`);
 }
 onBeforeMount(() => {
     counter.tableData()
     axiosxx()
     counter.cangaoInpu()
-    tableData=[...counter.moneyData];
+    tableData.value=[...counter.moneyData];
     console.log("初始化所有数据啦")
 
 })
