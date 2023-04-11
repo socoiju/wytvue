@@ -13,7 +13,7 @@
   </buttoncountC>
 <p>获得第{{dj}}个数据(0-100)</p><h4>{{ti}}{{id}}</h4><p>{{dd}}</p>
 <button @click="kx">——</button>
-<p>获得第{{dj}}个defaultData数据(0-10)</p><h4>{{data[counter.count]}}</h4>
+<p>获得第{{dj}}个defaultData数据(0-10)</p><h4>{{counter.moneyData[counter.count]}}</h4>
 </template>
 
 <script setup>
@@ -25,7 +25,7 @@ import buttoncountC from './xiaozujian/buttoncountC.vue';
 const counter = useCounterStore();
 let dj=ref(counter.count);
 let [id,ti,dd,n]= [ref(null),ref(''),ref(''),ref(1)];
-let data=[...counter.moneyData];
+//let data=[...counter.moneyData];
 
 //data=[...counter.moneyData[counter.count]];
 // 这句的失败原因是右边的第0个是花括号的对象而不是数组！
@@ -44,8 +44,8 @@ function axiosxx(){//获取网上的json
 
 function kx(){
     if(counter.count<=counter.moneyData.length){
-        data=[...counter.moneyData];
-        console.log(`处理完毕${data[counter.count]}`);
+        //data=[...counter.moneyData];
+        console.log(`处理完毕${counter.moneyData[counter.count]}`);
     }else{
         console.log("没有这个值啦");
     }
