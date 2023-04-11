@@ -27,13 +27,6 @@ let dj=ref(counter.count);
 let [id,ti,dd,n]= [ref(null),ref(''),ref(''),ref(1)];
 let data=[...counter.moneyData];
 
-// let id=ref('');
-// let ti=ref('');
-// let dd=ref('');
-// let n=ref(1);
-// let [dt, nm, zy, hq, dq,zd]= [ref(null),ref(null),ref(null),ref(null),ref(null),ref(null)];
-// [dt, nm, zy, hq, dq,zd]=counter.moneyDataB[k];
-
 //data=[...counter.moneyData[counter.count]];
 // 这句的失败原因是右边的第0个是花括号的对象而不是数组！
 
