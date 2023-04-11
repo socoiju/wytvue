@@ -1,0 +1,73 @@
+[33mcommit aaaf76b2c5b04e256a03b66d7f7c8fb7b31f9cc0[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Merge: df6c6be 943b4c9
+Author: socoi.ks <socoi.ju+ks@gmail.com>
+Date:   Tue Apr 11 10:37:43 2023 +0900
+
+    Merge branch 'master' into detached
+
+[33mcommit df6c6bec505d47dfbb0af4a716c45b7c4c383acd[m[33m ([m[1;32m0411master[m[33m)[m
+Author: socoi.ks <socoi.ju+ks@gmail.com>
+Date:   Tue Apr 11 10:33:16 2023 +0900
+
+    在store中存储金钱表格成功，把对初始数据的处理也先放在store里面了。
+
+[33mcommit 943b4c9430c3762e15f4e0824b698a4cc7f95a5a[m
+Merge: 55fb2b5 ccb5082
+Author: socoi.ks <socoi.ju+ks@gmail.com>
+Date:   Mon Apr 10 18:11:45 2023 +0900
+
+    Merge remote-tracking branch 'origin/master' into master
+    
+    # Conflicts:
+    #       src/components/vue0410Pinia.vue
+
+[33mcommit 55fb2b510f207b4f85c93c858ee97094effbcf8e[m[33m ([m[1;36mHEAD[m[33m)[m
+Author: socoi.ks <socoi.ju+ks@gmail.com>
+Date:   Mon Apr 10 18:09:06 2023 +0900
+
+    试着增加金钱表格数据快成功了明天稍微改改
+
+[33mcommit ccb5082f635ac862ecaf32d7301e641d4aa4e9fe[m
+Merge: a5af92c c66abcb
+Author: Kiki <58069104+socoiju@users.noreply.github.com>
+Date:   Mon Apr 10 17:22:32 2023 +0900
+
+    Merge pull request #2 from socoiju/0410eletest
+    
+    试着增加element但失败了的版本
+
+[33mcommit c66abcb3f80539c3ba8e183fc37972e6bdf71401[m[33m ([m[1;31morigin/0410eletest[m[33m)[m
+Author: socoi.ks <socoi.ju+ks@gmail.com>
+Date:   Mon Apr 10 17:01:42 2023 +0900
+
+    试着增加element但失败了的版本
+
+[33mcommit a5af92c2e04cb2284e2587edac7cee27c1e229ec[m
+Author: socoi.ks <socoi.ju+ks@gmail.com>
+Date:   Mon Apr 10 15:58:06 2023 +0900
+
+    一个能运行的用到了解构赋值的版本
+
+[33mcommit 7e5926a544a1041ef0f14c02b95c8ca7abb149d9[m
+Author: socoi.ks <socoi.ju+ks@gmail.com>
+Date:   Mon Apr 10 15:43:55 2023 +0900
+
+    略微润色
+
+[33mcommit fde02be32c5197057ee5f402de736513ec57717e[m
+Author: socoi.ks <socoi.ju+ks@gmail.com>
+Date:   Mon Apr 10 15:36:16 2023 +0900
+
+    将文本框独立出来实现了原本想做的功能。
+
+[33mcommit a0c945b7451e4a78693ed0d49afe2db1f2a4a320[m
+Author: socoi.ks <socoi.ju+ks@gmail.com>
+Date:   Mon Apr 10 14:48:12 2023 +0900
+
+    pinia 跨组件的计数功能（增减函数在store中） axios获取网上的json
+
+[33mcommit c0ff2f6328e321ecb7eedafd23d7d4750915cdb2[m
+Author: socoi.ks <socoi.ju+ks@gmail.com>
+Date:   Mon Apr 10 14:36:22 2023 +0900
+
+    Initial commit
