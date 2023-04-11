@@ -14,7 +14,6 @@ function nt(){
 button{
     color:black;border:none;background-color: #d2d2d2;
     font-size:25px;min-width:100px;height:40px;
-    margin-top: 10px;
-    margin-left: 10px;
+
 }
 </style>
