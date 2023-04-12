@@ -85,7 +85,7 @@ function handleCollapse(){
     counter.cangaoInpu()
 }
 function addrow(){
-  counter.addrow()
+  counter.addRow()
   counter.cangaoInpu()
   tableData.value=[...counter.moneyData];
   console.log(`处理完毕${counter.moneyData[counter.count]}`);
@@ -193,7 +193,7 @@ input{
     font-size: 15px;
 }
 
-.redMoneyCell{/*出金红色还没有成功*/
+.redMoneyCell{/*出金的红色还没有成功*/
     color:red!important;
     font-weight: normal!important;
 }

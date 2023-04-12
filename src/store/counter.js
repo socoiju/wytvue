@@ -12,17 +12,18 @@ export const useCounterStore = defineStore('counter',{
             {dt: "20230104", nm: "旅費交通費", zy: "3.2号", hq: "3.2", dq: ""},
             {dt: "20230105", nm: "旅費交通費", zy: "4号", hq: "4", dq: ""},
             {dt: "20230105", nm: "旅費交通費", zy: "5号", hq: "5", dq: ""},
-            {dt: "20230105", nm: "6号杂费", zy: "56(じ)+89(橡皮2)+45(ｚｚ)", hq: "190.1", dq: ""},
+            {dt: "20230105", nm: "6号杂费", zy: "56(じ)+89(橡皮2)+45(ｚｚ)", hq: "190.1", dq: "245"},
             {dt: "20230105", nm: "7号ZZZ", zy: "7号", hq: "1500", dq: ""},
             {dt: "20230108", nm: "旅費交通費", zy: "8号", hq: "8", dq: ""},
             {dt: "20230104", nm: "旅費交通費", zy: "8.1号", hq: "8.1", dq: ""},
-            {dt: "20230108", nm: "1号XXX", zy: "9号", hq: "1800", dq: ""},
+            {dt: "20230108", nm: "9号XXX", zy: "9号", hq: "1800", dq: "345"},
         ],
         moneyData:[//金钱的处理数据，有了子节点
             {dt: "20230108", nm: "1号XXX", zy: "9号", hq: "1800", dq: ""},
         ],
         cangaoData:[],
-        cangao:0,
+        cangaoRenderData:[],//为了给表格折叠的时候显示正常的残高
+        cangao:0,//先月残高
     }),
     actions: {//必须 包含了 store 操作的对象。
         increment() {
@@ -47,6 +48,7 @@ export const useCounterStore = defineStore('counter',{
                         // console.log(`当前的k2${k2}，已有折叠文件夹，打算推送给${k[str]}`);
                         // console.log(k2);
                         k2[k[str]].children.push({...item});
+                        k2[k[str]].children[k2[k[str]].children.length-1].zd=3;
                         k2[k[str]].zd=1;
                         //---解决：push也是引用来着。问题：每次触发这个函数，这里都会增加而不是清空后再写入。
                         k2[k[str]].zy=k2[k[str]].zy+"、"+item.zy;
@@ -55,7 +57,9 @@ export const useCounterStore = defineStore('counter',{
                         // console.log(`推送了此${str}内容去${k[str]}位置`);
                     } else {//暂时只有一个，正常push,但给zdnr里面一个副本，如果有第二项，它就是第一项折叠内容了
                         //1让ls等于自己 2给自己建立zdnr数组 3 ls放进去 4 整个item推给k2
+                        item.zd=0;
                         let ls={...item};
+                        ls.zd=3;
                         item.children=[ls];
                         k2.push({...item});
                         k[str] = [r];//新建一个键值对,这是记录的文件夹位置索引
@@ -84,10 +88,14 @@ export const useCounterStore = defineStore('counter',{
                 item.key=i;
                 if("children" in item&&item.children.length==1){
                     delete item.children;
+                    if(item.zd==1){//保证没有孩子节点的折叠值为0.如果确定了这之前也能保证，这里的可以删掉
+                        item.zd=0;
+                    }
                     console.log("item");
                 }
                 i++;
             }
+            console.log("我是来自counter，算moneyData的函数，我运行了一次")
             //console.log(this.moneyData[3]);
             //counter.count为总计数
 
@@ -113,15 +121,36 @@ export const useCounterStore = defineStore('counter',{
                     this.cangaoData[i] = "";
                     //break;//发现此行没有入金和出金就停止计算残高。但是这样的话中间行数就不能空。总之先这样写着，毕竟原文行数也没有留空
                 }
-                //console.log("运行第" + i + "次：" + this.cangaoData);
+
             }
         },
+        cangaoRender(){
+            // console.log(`⭐在渲染残高之前的真实残高，应该是已经计算过了的`);
+            // console.log(this.cangaoData)
+            this.cangaoRenderData=[...this.cangaoData];
+            // console.log("⭐在计算渲染残高之前");
+            // console.log(this.cangaoRenderData);
+            let n=0;
+            for(let i=this.moneyData.length-1;i>=0;i--){
+                //console.log(`⭐当前看的是第${i}个moneyData的数据！`)
+                if (this.moneyData[i].zd==1){//代表有文件夹
+                    n=this.moneyData[i].children.length;
+                    // console.log(`⭐这是一个有子节点的行，行的索引为${i}，子节点数目为${n}`);
+                    for(n;n>0;n--){
+                        this.cangaoRenderData.splice(i+1,0,"");
+                    }
+
+                }
+            }
+            // console.log("⭐计算之后");
+            // console.log(this.cangaoRenderData);
+        },
         //增加一行，折叠状态默认为0（非折叠行），重算残高9
-        addrow(){
-            this.moneyData.push({dt: "1", nm: "", zy: "", hq: "", dq: "",zd:0,children:[]});
+        addRow(){
+            this.moneyData.push({dt: "", nm: "", zy: "", hq: "", dq: "",zd:0,children:[]});
             this.moneyData[this.moneyData.length-1].key=this.moneyData.length;
             this.cangaoInpu();
-            console.log("增加了一行");
+            console.log("我是来自counter，为moneyData增加一行的函数，我运行了一次");
         },
 
     },
