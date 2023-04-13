@@ -1,9 +1,9 @@
 <template>
-<div style="height:100px">
+<div>
   <h3>0412的学习-表格制作</h3>
   <input v-model="n">
   <el-button class="button1">数组提取</el-button>
-  <el-button class="button1" @click="counter.cangaoInpu()">残高再计算调试用</el-button>
+  <el-button class="button1" @click="counter.tableData()">mD再计算调试用</el-button>
   <el-card class="box-card" style="margin-top:10px">
       <div class="card-header">
           <span>pinia 获得第{{n}}个defaultData数据(0-6)</span>
@@ -65,7 +65,7 @@ const counter = useCounterStore();//⭐试试改成响应式
 // const rightClickMenuS = useRightClickMenuStore()
 const tablePosition=ref(null)
 const table = toRef(tablePosition, 'value')
-let n=ref(0)
+let n=ref(1)
 let tableData=ref([...counter.moneyData])
 let ksv=ref(0)
 let showMenu=ref(false)
@@ -80,22 +80,12 @@ const TableRect = () => {//获取表格的页面坐标
     }
     return null
 }
-// function clickRow(){
-//
-// }
-// function getTablePosition(){
-//     const instance = getCurrentInstance()//为了获得表格位置来计算右键菜单出现点2
-//     const tableElem = instance.refs.myTable//为了获得表格位置来计算右键菜单出现点3
-//     const tableRect = tableElem.getBoundingClientRect();
-//     const left = tableRect.left + window.pageXOffset;
-//     const top = tableRect.top + window.pageYOffset;
-//     return { left, top };
-// }
+
 function mouseInMenuC(){//鼠标进入右键菜单，取消菜单自毁计时
     clearInterval(timer);
     timer = null;
 }
-function clickDeleteMenu(){//鼠标进入右键菜单，取消菜单自毁计时
+function clickDeleteMenu(){//❓左键点击外面（当没有进入的时候）问题是现在设置的是表格内部，如果点其他地方还是没用 如何监控一个任意处的点击
     showMenu.value=false;
     clearInterval(timer);
     timer = null;
@@ -104,21 +94,22 @@ function menu(row, column, event){
     event.preventDefault();
     if(!(showMenu.value==false)){
         showMenu.value=false;
-        clearInterval(timer);
-        timer = null;
+        // clearInterval(timer);
+        // timer = null;
     }
     console.log(event);
     if ("zd" in row&&!(row.zd==3)){//右键的编辑对子行不生效
-        console.log(`我这里有zd哦！！！`)
+        //console.log(`我这里有zd哦！！！`)
+        tableOffset={x:TableRect().x,y:TableRect().y};
         menuPosition.x=event.pageX-tableOffset.x+1;
         menuPosition.y=event.pageY-tableOffset.y+1;
-        console.log(`⭐我获得了右键点击的坐标值，X为${menuPosition.x}，Y为${menuPosition.y}`);
+        //console.log(`⭐我获得了右键点击的坐标值，X为${menuPosition.x}，Y为${menuPosition.y}`);
         showMenu.value=true;
-        timer = setInterval(() => {
-            showMenu.value=false;
-            clearInterval(timer)
-            timer = null;
-        }, 1500);
+        // timer = setInterval(() => {
+        //     showMenu.value=false;
+        //     clearInterval(timer)
+        //     timer = null;
+        // }, 1500);
     }
 }
 function handleCollapse(){
@@ -128,24 +119,25 @@ function addRow(){
   counter.addRow()
   counter.cangaoInpu()
   tableData.value=[...counter.moneyData];
-  console.log(`我是addRow，增加行处理完毕${counter.moneyData[counter.count]}`);
+  //console.log(`我是addRow，增加行处理完毕${counter.moneyData[counter.count]}`);
 }
 
 onBeforeMount(() => {
-    if (ksv.value==0){
+    let a=0;
+    if (a==0){// if (ksv.value==0){
         counter.tableData()
-        console.log("数据的转换，刷新mD的数据")
+        //console.log("数据的转换，刷新mD的数据")
         counter.cangaoInpu()
         counter.cangaoRender()
         tableData.value=[...counter.moneyData];
-        console.log("我是onBeforeMount，我初始化所有数据啦")
+        //console.log("我是onBeforeMount，我初始化所有数据啦")
         ksv.value=1;
     }
 })
 onMounted(() => {
-    console.log(`⭐表格坐标`)
+    //console.log(`⭐表格坐标`)
     tableOffset={x:TableRect().x,y:TableRect().y}
-    console.log(tableOffset)
+    //console.log(tableOffset)
 })
 
 </script>

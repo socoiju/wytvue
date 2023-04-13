@@ -1,6 +1,6 @@
 <template>
   <!-- <img alt="Vue logo" src="./assets/logo.png">-->
-<!--  <HelloWorld msg="Vue.js"/>-->
+  <HelloWorld msg="Vue.js"/>
 <!--  <vue0403/>-->
 <!--  <vue0404/>-->
 <!--  <vue0405/>-->
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue' //@代表绝对路径中的src文件夹，.代表当前文件所在目录
+import HelloWorld from './components/HelloWorld.vue' //@代表绝对路径中的src文件夹，.代表当前文件所在目录
 // import vue0403 from "@/components/vue0403.vue";
 // import vue0404 from "@/components/vue0404.vue";
 // import vue0405 from "@/components/vue0405.vue";
@@ -26,7 +26,7 @@ import vue0412Table from "@/components/vue0412Table.vue";
 export default {
   name: 'App',
   components: {
-    // HelloWorld,
+    HelloWorld,
     // vue0403,
     // vue0404,
     // vue0405,
