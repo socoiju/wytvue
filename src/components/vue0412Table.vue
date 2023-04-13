@@ -1,6 +1,6 @@
 <template>
 <div>
-  <h3>0412的学习-表格制作</h3>
+  <h3>0412-0413的学习-表格制作</h3>
   <input v-model="n">
   <el-button class="button1">数组提取</el-button>
   <el-button class="button1" @click="counter.tableData()">mD再计算调试用</el-button>
@@ -67,7 +67,6 @@ const tablePosition=ref(null)
 const table = toRef(tablePosition, 'value')
 let n=ref(1)
 let tableData=ref([...counter.moneyData])
-let ksv=ref(0)
 let showMenu=ref(false)
 let menuPosition={x:100,y:120}
 let tableOffset={x:0,y:0}
@@ -100,7 +99,7 @@ function menu(row, column, event){
     console.log(event);
     if ("zd" in row&&!(row.zd==3)){//右键的编辑对子行不生效
         //console.log(`我这里有zd哦！！！`)
-        tableOffset={x:TableRect().x,y:TableRect().y};
+        // tableOffset={x:TableRect().x,y:TableRect().y};
         menuPosition.x=event.pageX-tableOffset.x+1;
         menuPosition.y=event.pageY-tableOffset.y+1;
         //console.log(`⭐我获得了右键点击的坐标值，X为${menuPosition.x}，Y为${menuPosition.y}`);
@@ -123,20 +122,20 @@ function addRow(){
 }
 
 onBeforeMount(() => {
-    let a=0;
-    if (a==0){// if (ksv.value==0){
-        counter.tableData()
-        //console.log("数据的转换，刷新mD的数据")
-        counter.cangaoInpu()
-        counter.cangaoRender()
-        tableData.value=[...counter.moneyData];
-        //console.log("我是onBeforeMount，我初始化所有数据啦")
-        ksv.value=1;
-    }
+  counter.tableData()
+  //console.log("数据的转换，刷新mD的数据")
+  counter.cangaoInpu()
+  counter.cangaoRender()
+  tableData.value=[...counter.moneyData];
+  //console.log("我是onBeforeMount，我初始化所有数据啦")
+
 })
+
+
 onMounted(() => {
     //console.log(`⭐表格坐标`)
     tableOffset={x:TableRect().x,y:TableRect().y}
+    // document.addEventListener('mousemove', mousemoveHandler)//或许可以用这个来解决鼠标监听和菜单正常消失
     //console.log(tableOffset)
 })
 
