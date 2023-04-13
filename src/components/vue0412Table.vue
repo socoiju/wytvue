@@ -1,9 +1,9 @@
 <template>
-<div>
+<div style="height:250px">
   <h3>0412-0413的学习-表格制作</h3>
   <input v-model="n">
   <el-button class="button1">数组提取</el-button>
-  <el-button class="button1" @click="counter.tableData()">mD再计算调试用</el-button>
+  <el-button class="button1" @click="counter.tableData(),counter.cangaoInpu(),counter.cangaoRender()">mD再计算调试用</el-button>
   <el-card class="box-card" style="margin-top:10px">
       <div class="card-header">
           <span>pinia 获得第{{n}}个defaultData数据(0-6)</span>
@@ -14,13 +14,12 @@
 <!--  @expand="handleExpand"-->
 <!--  @row-click="clickRow"-->
 <!--  height="350"-->
-
     <div style="width:1000px;justify: center;position:relative">
-      <right-click-menu @mouseenter="mouseInMenuC" v-show="showMenu==true" :style="{position:'absolute',left:menuPosition.x+'px',top:menuPosition.y+'px'}"/>
-
+      <right-click-menu @mouseenter="mouseInMenuC" @click="clickDeleteMenu" v-show="showMenu==true" :style="{position:'absolute',left:menuPosition.x+'px',top:menuPosition.y+'px'}"/>
+      <editRow v-if="rightClickMenuS.menuEditRow==true" :style="{position:'absolute',left:menuPosition.x+'px',top:menuPosition.y+'px'}"/>
       <el-table
               border
-              :data="tableData"
+              :data="counter.moneyData"
               style="margin-top:10px;"
               width="750"
               row-key="key"
@@ -29,9 +28,9 @@
               @click="clickDeleteMenu"
               ref="tablePosition"
       >
-        <el-table-column            @click-right="menu" width="170px" class="dataCell" prop="dt" label="日付"/>
+        <el-table-column sortable @click-right="menu" width="170px" class="dataCell" prop="dt" label="日付"/>
         <el-table-column width="150px" class="nameCell" prop="nm" label="相手勘定"/>
-        <el-table-column  prop="zy" label="摘要"/>
+        <el-table-column editable prop="zy" label="摘要"/>
         <el-table-column width="100px" class="redMoneyCell" prop="hq" label="出金"/>
         <el-table-column width="100px" class="moneyCell" prop="dq" label="入金"/>
         <el-table-column width="100px" label="残高">
@@ -47,6 +46,7 @@
 <!--      </el-table>-->
 <!--  </div>-->
   <el-button  class="button1" @click="addRow()" style="margin-top:10px">追加</el-button>
+  <el-button  class="button1" @click="addRow()" style="margin-top:10px">删除空行</el-button>
   <el-button  class="button1" style="margin-top:10px">导出</el-button>
   <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
@@ -58,15 +58,16 @@ import {onBeforeMount, onMounted, ref, toRef} from "vue"
 //import axios from "axios"
 //import { storeToRefs } from 'pinia'响应式之后再试
 import { useCounterStore } from '@/store/counter'
-// import { useRightClickMenuStore } from '@/store/rightClickMenu'
+import { useRightClickMenuStore } from '@/store/rightClickMenu'
 import rightClickMenu from"./xiaozujian/rightClickMenu.vue"
+import editRow from"./xiaozujian/editRow.vue"
 // import { getCurrentInstance } from 'vue'//为了获得表格位置来计算右键菜单出现点1
 const counter = useCounterStore();//⭐试试改成响应式
-// const rightClickMenuS = useRightClickMenuStore()
+const rightClickMenuS = useRightClickMenuStore()
 const tablePosition=ref(null)
 const table = toRef(tablePosition, 'value')
 let n=ref(1)
-let tableData=ref([...counter.moneyData])
+//let tableData=ref([...counter.moneyData])
 let showMenu=ref(false)
 let menuPosition={x:100,y:120}
 let tableOffset={x:0,y:0}
@@ -90,6 +91,8 @@ function clickDeleteMenu(){//❓左键点击外面（当没有进入的时候）
     timer = null;
 }
 function menu(row, column, event){
+
+    rightClickMenuS.row=row;
     event.preventDefault();
     if(!(showMenu.value==false)){
         showMenu.value=false;
@@ -115,9 +118,9 @@ function handleCollapse(){
     counter.cangaoInpu()
 }
 function addRow(){
-  counter.addRow()
+  counter.addRow(counter.moneyData.length-1)
   counter.cangaoInpu()
-  tableData.value=[...counter.moneyData];
+  //tableData.value=[...counter.moneyData];
   //console.log(`我是addRow，增加行处理完毕${counter.moneyData[counter.count]}`);
 }
 
@@ -126,7 +129,7 @@ onBeforeMount(() => {
   //console.log("数据的转换，刷新mD的数据")
   counter.cangaoInpu()
   counter.cangaoRender()
-  tableData.value=[...counter.moneyData];
+  //tableData.value=[...counter.moneyData];
   //console.log("我是onBeforeMount，我初始化所有数据啦")
 
 })
@@ -222,13 +225,21 @@ input{
 .el-table th cell{
     text-align:center!important;
 }
+.el-table tr{
+    min-height: 1em;
+}
 .el-table td{
     color:black!important;
     font-weight:normal!important;
     /*font-size: 15px;*/
     border: 1px solid black;
 }
+.el-input{
+    --el-input-text-color:black!important;
+    --el-table-border:none!important;
+    --el-table-border:none!important;
 
+}
 .redMoneyCell{/*出金的红色还没有成功*/
     color:red!important;
     font-weight: normal!important;

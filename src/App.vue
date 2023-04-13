@@ -9,6 +9,7 @@
 <!--  <vue0407b/>-->
 <!--    <vue0410Pinia/>-->
 <vue0412Table/>
+<linShi/>
 
 
 </template>
@@ -23,6 +24,7 @@ import HelloWorld from './components/HelloWorld.vue' //@代表绝对路径中的
 // import vue0407b from "@/components/vue0407b.vue";
 // import vue0410Pinia from "@/components/vue0410Pinia.vue";
 import vue0412Table from "@/components/vue0412Table.vue";
+import linShi from"@/components/linShi.vue";
 export default {
   name: 'App',
   components: {
@@ -34,7 +36,8 @@ export default {
     // vue0407a,
     //   vue0407b,
     //   vue0410Pinia
-      vue0412Table
+      vue0412Table,
+      linShi
   }
 }
 </script>

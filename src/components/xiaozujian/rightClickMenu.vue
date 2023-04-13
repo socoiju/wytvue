@@ -1,20 +1,45 @@
 <template>
     <div class="menu" @click.right="clickRight">
     <ul class="menuContext">
-        <li><p>编辑</p></li>
+        <li @click="editRow"><p>编辑</p></li>
         <el-divider/>
-        <li><p>清空</p></li>
-        <li><p>删除</p></li>
+        <li @click="clearRow"><p>清空</p></li>
+        <li @click="deleteRow"><p>删除</p></li>
         <el-divider/>
-        <li><p>在上面插入一行</p></li>
-        <li><p>在下面插入一行</p></li>
+        <li @click="addRowOnThis"><p>在上面插入一行</p></li>
+        <li @click="addRowUnderThis"><p>在下面插入一行</p></li>
     </ul>
     </div>
 </template>
 
 <script setup>
-function clickRight(event){
+import { useCounterStore } from '@/store/counter'
+import { useRightClickMenuStore } from '@/store/rightClickMenu'
+const counter = useCounterStore();
+const rightClickMenuS = useRightClickMenuStore()
+function clickRight(event){//禁止自己又触发右键点击
     event.preventDefault();
+}
+function editRow(){
+    rightClickMenuS.menuEditRow=true;
+}
+function clearRow(){
+    let index=rightClickMenuS.row.key;
+    counter.clearRow(index);
+}
+function deleteRow(){
+    let index=rightClickMenuS.row.key;
+    counter.deleteRow(index);
+}
+function addRowOnThis(){
+    let index=rightClickMenuS.row.key;
+    counter.addRow(index-1);
+
+}
+function addRowUnderThis(){
+    let index=rightClickMenuS.row.key;
+    counter.addRow(index);
+
 }
 </script>
 

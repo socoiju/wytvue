@@ -22,6 +22,7 @@ export const useCounterStore = defineStore('counter', {
         moneyData: [//金钱的处理数据，有了子节点
             {dt: "20230108", nm: "mD初始值不出现才对", zy: "mD初始值不出现才对", hq: "1800", dq: ""},
         ],
+        moneyRenderData:[],
         cangaoData: [],
         cangaoRenderData: [],//为了给表格折叠的时候显示正常的残高
         cangao: 0,//先月残高
@@ -136,12 +137,46 @@ export const useCounterStore = defineStore('counter', {
             // console.log(this.cangaoRenderData);
         },
         //增加一行，折叠状态默认为0（非折叠行），重算残高9
-        addRow() {
-            this.moneyData.push({dt: "", nm: "", zy: "", hq: "", dq: "", zd: 0, children: []});
-            this.moneyData[this.moneyData.length - 1].key = this.moneyData.length;
+        addRow(index) {
+            this.moneyData.splice(index+1,0,{dt: "", nm: "", zy: "", hq: "", dq: "", zd: 0, children: []})
+            if (index+1>=this.moneyData.length-1){//new 7最大
+                if (index+1==0) {//唯一
+                    this.moneyData[index+1].key =0;
+                }else{
+                    this.moneyData[index+1].key =this.moneyData[index].key+1; //7 key =6 key+1
+                }
+            }else if(index+1==0){//最小
+                this.moneyData[index+2].key = (this.moneyData[index+1].key+this.moneyData[index+3].key)/2;
+                this.moneyData[index+1].key=0;
+            } else{
+                this.moneyData[index+1].key = (this.moneyData[index].key+this.moneyData[index+2].key)/2;
+            }//7 key = (6+8)/2
+
+            for(let i=0;i<this.moneyData.length;i++){
+                this.moneyData[i].key=i;
+            }
             this.cangaoInpu();
+            this.cangaoRender();
             //console.log("我是来自counter，为moneyData增加一行的函数，我运行了一次");
         },
+        deleteRow(index){
+            this.moneyData.splice(index,1);
+            for(let i=0;i<this.moneyData.length;i++){
+                this.moneyData[i].key=i;
+            }
+            this.cangaoInpu();
+            this.cangaoRender();
+        },
+        clearRow(index){
+            this.moneyData[index]={dt: "", nm: "", zy: "", hq: "", dq: "", zd: 0, children: []};
+            for(let i=0;i<this.moneyData.length;i++){
+                this.moneyData[i].key=i;
+            }
+            this.cangaoInpu();
+            this.cangaoRender();
+        },
+
+
 
     },
 });
