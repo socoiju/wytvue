@@ -22,7 +22,7 @@ export const useCounterStore = defineStore('counter', {
         moneyData: [//金钱的处理数据，有了子节点
             {dt: "20230108", nm: "mD初始值不出现才对", zy: "mD初始值不出现才对", hq: "1800", dq: ""},
         ],
-        moneyRenderData:[],
+        moneySaveData:[],
         cangaoData: [],
         cangaoRenderData: [],//为了给表格折叠的时候显示正常的残高
         cangao: 0,//先月残高

@@ -1,31 +1,8 @@
-<template>
-<buttoncountA :getS="getS" :k="k"/>
-<buttoncountB :getS="getS" :k="k"/>
-</template>
-
-<script>
-import buttoncountA from "./xiaozujian/buttoncountA.vue";
-import buttoncountB from "./xiaozujian/buttoncountB.vue";
-export default {
-    // eslint-disable-next-line vue/multi-word-component-names
-    name: "vue0407.vue",
-    // k:2,
-    data() {
-
-        return {
-            k:2,
-        }
-        },
-    components:{
-        buttoncountA,buttoncountB
-    },
-    methods:{
-        getS(name) {
-            console.log('App收到了：', name)
-        }
-    }
+const getTask=async()=>{
+    const snapshot=await getDocs(collection(db,"tasks"));
+    tasks.value=snapshot.docs.map((doc)=>({
+        ...doc.data(),
+        id:doc.id
+    }));
 }
-</script>
 
-<style scoped>
-</style>

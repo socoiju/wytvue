@@ -16,12 +16,12 @@
 <!--  height="350"-->
     <div style="width:1000px;justify: center;position:relative">
       <right-click-menu @mouseenter="mouseInMenuC" @click="clickDeleteMenu" v-show="showMenu==true" :style="{position:'absolute',left:menuPosition.x+'px',top:menuPosition.y+'px'}"/>
-      <editRow v-if="rightClickMenuS.menuEditRow==true" :style="{position:'absolute',left:menuPosition.x+'px',top:menuPosition.y+'px'}"/>
+      <editRow v-if="rightClickMenuS.menuEditRow==true" :style="{position:'absolute',left:menuPosition.x/2+'px',top:menuPosition.y/2+'px'}"/>
       <el-table
               border
               :data="counter.moneyData"
               style="margin-top:10px;"
-              width="750"
+
               row-key="key"
               @collapse="handleCollapse"
               @row-contextmenu="menu"
@@ -33,7 +33,7 @@
         <el-table-column editable prop="zy" label="摘要"/>
         <el-table-column width="100px" class="redMoneyCell" prop="hq" label="出金"/>
         <el-table-column width="100px" class="moneyCell" prop="dq" label="入金"/>
-        <el-table-column width="100px" label="残高">
+        <el-table-column  label="残高">
           <template v-slot="scope">
             {{ counter.cangaoRenderData[scope.$index] }}
           </template>
@@ -131,7 +131,6 @@ onBeforeMount(() => {
   counter.cangaoRender()
   //tableData.value=[...counter.moneyData];
   //console.log("我是onBeforeMount，我初始化所有数据啦")
-
 })
 
 

@@ -1,5 +1,5 @@
 <template>
-    <p>1234567</p>
+    <div style="display:flex;background-color:white;border-color:#42b983;border-width:30px;z-index: 999">
     <table>
         <tbody>
         <tr>
@@ -11,7 +11,8 @@
         </tr>
         </tbody>
     </table>
-    <button @click="saveRow">保存</button>
+    <button @click="saveRow" class="button1">保存</button>
+    </div>
 </template>
 
 <script setup>
@@ -44,6 +45,7 @@ function handleInput(index,newda){
 function saveRow(){
     counter.cangaoInpu()
     counter.cangaoRender()
+    counter.moneySaveData=[...counter.moneyData];
 }
 </script>
 

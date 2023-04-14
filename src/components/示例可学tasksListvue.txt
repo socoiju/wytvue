@@ -1,0 +1,41 @@
+<script setup>
+import { ref } from 'vue';
+let id = 0;
+
+const tasks = ref([]);
+const task = ref('');
+
+const addTask = () => {
+    tasks.value.push({ id, task: task.value, completed: false });
+    task.value = '';
+    id++;
+};
+
+const deleteTask = (id) => {
+    const index = tasks.value.findIndex((task) => task.id === id);
+    tasks.value.splice(index, 1);
+};
+</script>
+
+<template>
+    <h1>Tasks</h1>
+    <ul>
+        <li
+            v-for="task in tasks"
+            :key="task.id"
+            :style="task.completed ? 'text-decoration:line-through' : ''"
+        >
+            <span><input type="checkbox" v-model="task.completed" /></span>
+            <span>{{ task.task }}</span>
+            <span><button @click="deleteTask(task.id)">削除</button></span>
+        </li>
+    </ul>
+    <form @submit.prevent="addTask">
+        <div>
+            <input v-model="task" />
+        </div>
+        <div>
+            <button type="submit">タスクを登録</button>
+        </div>
+    </form>
+</template>
